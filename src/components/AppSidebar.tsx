@@ -28,48 +28,60 @@ export function AppSidebar() {
 
   const getNavClassName = ({ isActive }: { isActive: boolean }) =>
     isActive 
-      ? "bg-fintech-primary text-white font-medium shadow-glow" 
-      : "hover:bg-fintech-primary/10 hover:text-fintech-primary transition-colors";
+      ? "bg-gradient-primary text-white font-medium shadow-glow animate-scale-in" 
+      : "hover:bg-fintech-primary/10 hover:text-fintech-primary transition-all duration-300 interactive-scale";
 
   return (
     <Sidebar
-      className={`${collapsed ? "w-14" : "w-60"} border-r border-border bg-gradient-card`}
+      className={`${collapsed ? "w-16" : "w-64"} border-r border-border/50 bg-gradient-to-b from-card to-card/95 backdrop-blur-sm`}
     >
-      <SidebarContent>
-        {/* App Title */}
+      <SidebarContent className="overflow-hidden">
+        {/* Enhanced App Title */}
         {!collapsed && (
-          <div className="p-6 border-b border-border">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <CreditCard className="h-4 w-4 text-white" />
+          <div className="p-6 border-b border-border/50">
+            <div className="flex items-center gap-3 animate-slide-in">
+              <div className="w-10 h-10 bg-gradient-primary rounded-xl flex items-center justify-center shadow-lg animate-pulse-glow">
+                <CreditCard className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-card-foreground">Payment Guru</h2>
-                <p className="text-xs text-muted-foreground">Manage payments</p>
+                <h2 className="font-bold text-card-foreground text-lg gradient-text">Payment Guru</h2>
+                <p className="text-xs text-muted-foreground">Smart payment management</p>
               </div>
             </div>
           </div>
         )}
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-muted-foreground">
+        {/* Collapsed logo */}
+        {collapsed && (
+          <div className="p-4 flex justify-center border-b border-border/50">
+            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center animate-bounce-in">
+              <CreditCard className="h-4 w-4 text-white" />
+            </div>
+          </div>
+        )}
+
+        <SidebarGroup className="py-4">
+          <SidebarGroupLabel className="text-muted-foreground px-4 mb-2">
             {!collapsed ? "Navigation" : ""}
           </SidebarGroupLabel>
 
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => (
+          <SidebarGroupContent className="px-2">
+            <SidebarMenu className="space-y-1">
+              {navigationItems.map((item, index) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink 
                       to={item.url} 
                       end 
                       className={({ isActive }) => 
-                        `flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${getNavClassName({ isActive })}`
+                        `flex items-center gap-3 p-3 mx-2 rounded-xl transition-all duration-300 touch-friendly ${getNavClassName({ isActive })}`
                       }
+                      style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <item.icon className="h-5 w-5 flex-shrink-0" />
-                      {!collapsed && <span className="text-sm font-medium">{item.title}</span>}
+                      {!collapsed && (
+                        <span className="text-sm font-medium truncate">{item.title}</span>
+                      )}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -78,12 +90,17 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Footer in sidebar */}
+        {/* Enhanced Footer */}
         {!collapsed && (
-          <div className="mt-auto p-4 border-t border-border">
-            <div className="p-3 bg-fintech-primary/10 rounded-lg">
-              <p className="text-xs text-fintech-primary font-medium">Payment Guru Pro</p>
-              <p className="text-xs text-muted-foreground">Advanced payment management</p>
+          <div className="mt-auto p-4 border-t border-border/50">
+            <div className="glass-card p-4 rounded-xl animate-slide-up">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2 h-2 bg-fintech-success rounded-full animate-pulse"></div>
+                <p className="text-xs text-fintech-primary font-semibold">Payment Guru Pro</p>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Advanced payment analytics & insights
+              </p>
             </div>
           </div>
         )}

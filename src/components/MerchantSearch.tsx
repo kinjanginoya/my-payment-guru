@@ -68,56 +68,66 @@ export function MerchantSearch({ onMerchantSelect }: MerchantSearchProps) {
   return (
     <div className="space-y-4">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input
-          placeholder="Search merchants..."
+          type="text"
+          placeholder="Search merchants (e.g., Amazon, Apple, etc.)"
           value={searchTerm}
           onChange={(e) => handleSearch(e.target.value)}
-          className="pl-10 bg-card border-border focus:ring-fintech-primary focus:border-fintech-primary"
+          className="pl-12 h-12 sm:h-14 text-base rounded-xl border-2 border-border/50 focus:border-fintech-primary/50 transition-all duration-300"
         />
       </div>
-
-      <div className="grid gap-3 max-h-96 overflow-y-auto">
-        {filteredMerchants.map((merchant) => (
-          <Card
-            key={merchant.id}
-            className="p-4 cursor-pointer hover:shadow-lg-custom transition-all duration-300 bg-gradient-card border-0 animate-slide-in"
-            onClick={() => onMerchantSelect(merchant)}
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <h3 className="font-semibold text-card-foreground mb-1">{merchant.name}</h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                  <MapPin className="h-3 w-3" />
-                  <span>{merchant.location}</span>
-                  <div className="flex items-center gap-1">
-                    <Star className="h-3 w-3 fill-fintech-warning text-fintech-warning" />
-                    <span>{merchant.rating}</span>
+      
+      {searchTerm && (
+        <div className="space-y-2 max-h-60 sm:max-h-80 overflow-y-auto custom-scrollbar">
+          {filteredMerchants.length > 0 ? (
+            filteredMerchants.map((merchant, index) => (
+              <div
+                key={merchant.id}
+                onClick={() => onMerchantSelect(merchant)}
+                className="mobile-card cursor-pointer hover:shadow-interactive transition-all duration-300 interactive-scale animate-slide-in"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-card-foreground truncate">{merchant.name}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{merchant.category}</p>
+                    <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                      <span className="w-1 h-1 bg-fintech-info rounded-full"></span>
+                      {merchant.location}
+                    </p>
+                  </div>
+                  <div className="ml-3 text-center">
+                    <div className="px-3 py-1 bg-fintech-primary/10 rounded-full">
+                      <span className="text-xs font-semibold text-fintech-primary">
+                        {merchant.acceptedProviders.length}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">methods</p>
                   </div>
                 </div>
-                <Badge variant="secondary" className="text-xs">
-                  {merchant.category}
-                </Badge>
               </div>
-              <div className="text-right">
-                <p className="text-xs text-muted-foreground mb-1">Accepts</p>
-                <div className="flex flex-wrap gap-1 justify-end">
-                  {merchant.acceptedProviders.slice(0, 3).map((provider) => (
-                    <Badge key={provider} variant="outline" className="text-xs">
-                      {provider}
-                    </Badge>
-                  ))}
-                  {merchant.acceptedProviders.length > 3 && (
-                    <Badge variant="outline" className="text-xs">
-                      +{merchant.acceptedProviders.length - 3}
-                    </Badge>
-                  )}
-                </div>
+            ))
+          ) : (
+            <div className="text-center py-8 sm:py-12 animate-fade-in">
+              <div className="p-4 bg-muted/50 rounded-full w-fit mx-auto mb-4">
+                <Search className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
               </div>
+              <p className="text-muted-foreground text-sm">No merchants found matching your search</p>
+              <p className="text-xs text-muted-foreground mt-1">Try searching for popular brands like Amazon, Apple, or McDonald's</p>
             </div>
-          </Card>
-        ))}
-      </div>
+          )}
+        </div>
+      )}
+      
+      {!searchTerm && (
+        <div className="text-center py-6 sm:py-8 animate-fade-in">
+          <div className="p-3 bg-fintech-primary/10 rounded-full w-fit mx-auto mb-3">
+            <Search className="h-5 w-5 text-fintech-primary" />
+          </div>
+          <p className="text-sm text-muted-foreground">Start typing to search for merchants</p>
+        </div>
+      )}
     </div>
   );
 }

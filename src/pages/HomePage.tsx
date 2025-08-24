@@ -17,50 +17,75 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Hero Section */}
-      <div className="bg-gradient-hero text-white p-8 rounded-lg">
-        <div className="flex items-center gap-3 mb-4">
-          <Search className="h-8 w-8" />
-          <h1 className="text-3xl font-bold">Find Payment Options</h1>
+    <div className="space-y-4 sm:space-y-6">
+      {/* Enhanced Hero Section - Mobile First */}
+      <div className="bg-gradient-hero text-white p-6 sm:p-8 rounded-2xl shadow-lg animate-slide-up">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
+          <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+            <Search className="h-6 w-6 sm:h-8 sm:w-8" />
+          </div>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1">Find Payment Options</h1>
+            <p className="text-base sm:text-lg opacity-90 leading-relaxed">
+              Search merchants and discover the best payment methods for your transactions
+            </p>
+          </div>
         </div>
-        <p className="text-lg opacity-90">
-          Search for merchants and discover the best payment methods for your transactions
-        </p>
       </div>
 
-      {/* Stats Overview */}
-      <DashboardStats />
+      {/* Enhanced Stats Overview */}
+      <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+        <DashboardStats />
+      </div>
 
-      {/* Main Search Interface */}
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* Merchant Search */}
-        <Card className="p-6 bg-gradient-card border-0 shadow-card">
-          <div className="flex items-center gap-2 mb-4">
-            <Search className="h-5 w-5 text-fintech-primary" />
-            <h2 className="text-xl font-semibold">Search Merchants</h2>
+      {/* Mobile-Optimized Search Interface */}
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
+        {/* Enhanced Merchant Search */}
+        <Card className="mobile-card lg:col-span-1 animate-slide-in" style={{ animationDelay: '300ms' }}>
+          <div className="flex items-center gap-3 mb-4 sm:mb-6">
+            <div className="p-2 bg-fintech-primary/10 rounded-lg">
+              <Search className="h-5 w-5 text-fintech-primary" />
+            </div>
+            <div>
+              <h2 className="text-lg sm:text-xl font-semibold">Search Merchants</h2>
+              <p className="text-sm text-muted-foreground hidden sm:block">Find and select a merchant</p>
+            </div>
           </div>
           <MerchantSearch onMerchantSelect={handleMerchantSelect} />
         </Card>
 
-        {/* Selected Merchant Info */}
+        {/* Enhanced Selected Merchant Info */}
         {selectedMerchant ? (
-          <Card className="p-6 bg-gradient-card border-0 shadow-card">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="h-5 w-5 text-fintech-success" />
-              <h2 className="text-xl font-semibold">Merchant Details</h2>
+          <Card className="mobile-card lg:col-span-1 animate-bounce-in">
+            <div className="flex items-center gap-3 mb-4 sm:mb-6">
+              <div className="p-2 bg-fintech-success/10 rounded-lg">
+                <TrendingUp className="h-5 w-5 text-fintech-success" />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-semibold">Merchant Details</h2>
+                <p className="text-sm text-muted-foreground hidden sm:block">Selected merchant information</p>
+              </div>
             </div>
-            <div className="p-4 bg-fintech-primary/10 rounded-lg border border-fintech-primary/20">
-              <h3 className="font-semibold text-lg">{selectedMerchant.name}</h3>
-              <p className="text-muted-foreground">{selectedMerchant.category}</p>
-              <p className="text-sm mt-2">Location: {selectedMerchant.location}</p>
-              <div className="mt-3">
-                <p className="text-sm font-medium mb-1">Accepted Payment Methods:</p>
-                <div className="flex flex-wrap gap-1">
-                  {selectedMerchant.acceptedProviders.map((provider: string) => (
+            <div className="glass-card p-4 sm:p-6 rounded-xl border border-fintech-primary/20">
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="font-bold text-lg sm:text-xl text-fintech-primary">{selectedMerchant.name}</h3>
+                  <p className="text-muted-foreground text-sm">{selectedMerchant.category}</p>
+                </div>
+                <div className="w-2 h-2 bg-fintech-success rounded-full animate-pulse"></div>
+              </div>
+              <p className="text-sm mb-4 flex items-center gap-2">
+                <span className="w-1 h-1 bg-muted-foreground rounded-full"></span>
+                Location: {selectedMerchant.location}
+              </p>
+              <div className="space-y-3">
+                <p className="text-sm font-semibold text-card-foreground">Accepted Payment Methods:</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedMerchant.acceptedProviders.map((provider: string, index: number) => (
                     <span 
                       key={provider}
-                      className="px-2 py-1 bg-fintech-primary/20 text-fintech-primary text-xs rounded-md"
+                      className="px-3 py-2 bg-gradient-primary text-white text-xs rounded-lg font-medium shadow-sm interactive-scale"
+                      style={{ animationDelay: `${index * 100}ms` }}
                     >
                       {provider}
                     </span>
@@ -70,22 +95,29 @@ export default function HomePage() {
             </div>
           </Card>
         ) : (
-          <Card className="p-8 text-center bg-gradient-card border-0 shadow-card">
-            <Search className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+          <Card className="mobile-card lg:col-span-1 text-center py-8 sm:py-12 animate-fade-in">
+            <div className="p-4 bg-muted/50 rounded-full w-fit mx-auto mb-4">
+              <Search className="h-8 w-8 sm:h-12 sm:w-12 text-muted-foreground" />
+            </div>
             <h3 className="text-lg font-semibold mb-2">Select a Merchant</h3>
-            <p className="text-muted-foreground">
-              Search and select a merchant to see their accepted payment methods and options.
+            <p className="text-muted-foreground text-sm leading-relaxed max-w-md mx-auto">
+              Search and select a merchant to view their accepted payment methods and available options.
             </p>
           </Card>
         )}
       </div>
 
-      {/* Payment Provider Selection */}
+      {/* Enhanced Payment Provider Selection */}
       {selectedMerchant && (
-        <Card className="p-6 bg-gradient-card border-0 shadow-card">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="h-5 w-5 text-fintech-warning" />
-            <h2 className="text-xl font-semibold">Choose Payment Method</h2>
+        <Card className="mobile-card animate-slide-up" style={{ animationDelay: '400ms' }}>
+          <div className="flex items-center gap-3 mb-4 sm:mb-6">
+            <div className="p-2 bg-fintech-warning/10 rounded-lg">
+              <Zap className="h-5 w-5 text-fintech-warning" />
+            </div>
+            <div>
+              <h2 className="text-lg sm:text-xl font-semibold">Choose Payment Method</h2>
+              <p className="text-sm text-muted-foreground hidden sm:block">Select your preferred payment option</p>
+            </div>
           </div>
           <PaymentProviderSelector
             merchantName={selectedMerchant.name}
