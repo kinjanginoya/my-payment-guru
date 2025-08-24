@@ -80,7 +80,9 @@ export default {
 			boxShadow: {
 				'card': 'var(--shadow-card)',
 				'lg-custom': 'var(--shadow-lg)',
-				'glow': 'var(--shadow-glow)'
+				'glow': 'var(--shadow-glow)',
+				'mobile': 'var(--shadow-mobile)',
+				'interactive': 'var(--shadow-interactive)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
